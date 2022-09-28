@@ -1,7 +1,5 @@
-from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.urls import reverse
-
 monthly_challenges = {
     "january": "Try to get projects as a freelancer",
     "february": "Try to lose some wait",
@@ -19,86 +17,68 @@ monthly_challenges = {
 
 
 # Create your views here.
-# Http Response is used to set View for the Specific Url
 
-def monthly_challenge_by_month(request, month):
+# -----------Manual method - Method 1
+# def index(request):
+#     return HttpResponse("<h1>This works</h1>")
+
+
+# # ------------Normal-Dynamic Method for generating view - Method 2
+# def monthly_challenge_by_number(request, month):
+#     return HttpResponse(month)
+#
+#
+# def monthly_challenge(request, month):
+#     text = "Not Found"
+#     if month == 'january':
+#         text = "I am Jan"
+#     elif month == "february":
+#         text = "I'm February"
+#     return HttpResponse(text)
+
+# # # ------------Standard-Dynamic Method for generating view - Method 2
+# def monthly_challenge(request, month):
+#     try:
+#         text = monthly_challenges[month]
+#         return HttpResponse(text)
+#     except:
+#         return HttpResponseNotFound("Month Not Found")
+
+
+# # # ------------Simple Method Redirecting Urls - Method 1
+# def monthly_challenge_by_number(request, month):
+#     months = list(monthly_challenges.keys())
+#     if month > len(months):
+#         return HttpResponseNotFound("Invalid Month")
+#     redirect_month = months[month - 1]
+#     return HttpResponseRedirect("/challenges/" + redirect_month) #this is not dynamic yet
+#
+#
+# def monthly_challenge(request, month):
+#     try:
+#         text = monthly_challenges[month]
+#         return HttpResponse(text)
+#     except:
+#         return HttpResponseNotFound("Month Not Found")
+#
+
+
+# # ------------Dynamic Method of Redirecting Urls - Advance Method
+def monthly_challenge_by_number(request, month):
     months = list(monthly_challenges.keys())
     if month > len(months):
-        return HttpResponseNotFound("<h1>Invalid Input</h1>")
-    redirect_month = months[month-1]
+        return HttpResponseNotFound("Invalid Month")
+    redirect_month = months[month - 1]
+
+    # redirect_month has name of month so don't forget it.
 
     redirect_path = reverse("month-challenge", args=[redirect_month])
     return HttpResponseRedirect(redirect_path)
-    # return HttpResponseRedirect("/challenges/"+ redirect_month) # it is not much dynamic
-    # return HttpResponse(f'<h1>{months[month]}</h1>')
 
 
 def monthly_challenge(request, month):
     try:
-        challenges_text = monthly_challenges[month]
-        return HttpResponse(f'<h1>{challenges_text}</h1>')
+        text = monthly_challenges[month]
+        return HttpResponse(text)
     except:
-        return HttpResponseNotFound("Response Not Found")
-
-    # if month == 'january':
-    #     challenges_text = "january"
-    # elif month == 'february':
-    #     challenges_text = 'february'
-    # elif month == 'march':
-    #     challenges_text = 'march'
-    # elif month == 'april':
-    #     challenges_text = 'april'
-    # else:
-    #     return HttpResponseNotFound("Not Found")
-
-# def january(request):
-#     return HttpResponse("<h1>This works!</h1>")
-#
-#
-# def february(request):
-#     return HttpResponse("I am Fabulus")
-#
-#
-# def march(request):
-#     return HttpResponse("I am Master AIB")
-#
-#
-# def april(request):
-#     return HttpResponse("I am Ahmad Iqbal Bhatti")
-#
-#
-# def may(request):
-#     return HttpResponse("I am the Master piece")
-#
-#
-# def june(request):
-#     return HttpResponse("I am not Jealous")
-#
-#
-# def july(request):
-#     return HttpResponse("I love jalabies")
-#
-#
-# def august(request):
-#     return HttpResponse("Its independent day")
-#
-#
-# def september(request):
-#     return HttpResponse("I am Very serious about her")
-#
-#
-# def october(request):
-#     return HttpResponse("I don't like Octopus")
-#
-#
-# def november(request):
-#     return HttpResponse("There is no way to home")
-#
-#
-# def december(request):
-#     return HttpResponse("Haha deliberate")
-#
-#
-#
-#
-#
+        return HttpResponseNotFound("Month Not Found")
