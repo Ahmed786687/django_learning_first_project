@@ -1,5 +1,6 @@
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.urls import reverse
+
 monthly_challenges = {
     "january": "Try to get projects as a freelancer",
     "february": "Try to lose some wait",
@@ -16,7 +17,24 @@ monthly_challenges = {
 }
 
 
+def get_months_list():
+    return list(monthly_challenges.keys())
+
+
 # Create your views here.
+
+def index(request):
+    list_items = ""
+    months = get_months_list()
+
+    for month in months:
+        month_path = reverse("month-challenge", args=[month])
+        list_items += f'<li><a href="{month_path}">{month.capitalize()}</a></li>'
+
+    response_data = f"<ul>{list_items}</ul>"
+
+    return HttpResponse(response_data)
+
 
 # -----------Manual method - Method 1
 # def index(request):
@@ -65,7 +83,8 @@ monthly_challenges = {
 
 # # ------------Dynamic Method of Redirecting Urls - Advance Method
 def monthly_challenge_by_number(request, month):
-    months = list(monthly_challenges.keys())
+    # months = list(monthly_challenges.keys())
+    months = get_months_list()
     if month > len(months):
         return HttpResponseNotFound("Invalid Month")
     redirect_month = months[month - 1]
@@ -79,6 +98,6 @@ def monthly_challenge_by_number(request, month):
 def monthly_challenge(request, month):
     try:
         text = monthly_challenges[month]
-        return HttpResponse(text)
+        return HttpResponse(f"<h1>{text}</h1>")
     except:
-        return HttpResponseNotFound("Month Not Found")
+        return HttpResponseNotFound("<h1>This month is not Supported!</h1>")
