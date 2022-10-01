@@ -1,5 +1,6 @@
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.urls import reverse
+from django.template.loader import render_to_string
 
 monthly_challenges = {
     "january": "Try to get projects as a freelancer",
@@ -97,7 +98,10 @@ def monthly_challenge_by_number(request, month):
 
 def monthly_challenge(request, month):
     try:
-        text = monthly_challenges[month]
-        return HttpResponse(f"<h1>{text}</h1>")
+        # text = monthly_challenges[month]
+        # To load html or css content in django project, we need to include path in the setting
+        # file of the main project app.
+        response_data = render_to_string("challenges/challenge.html")
+        return HttpResponse(f"<h1>{response_data}</h1>")
     except:
         return HttpResponseNotFound("<h1>This month is not Supported!</h1>")
