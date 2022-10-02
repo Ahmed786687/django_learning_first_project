@@ -1,5 +1,6 @@
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.urls import reverse
+from django.shortcuts import render
 from django.template.loader import render_to_string
 
 monthly_challenges = {
@@ -25,16 +26,32 @@ def get_months_list():
 # Create your views here.
 
 def index(request):
-    list_items = ""
+    # list_items = []
+    # items_path = []
+    challenges_dict = {}
     months = get_months_list()
 
     for month in months:
         month_path = reverse("month-challenge", args=[month])
-        list_items += f'<li><a href="{month_path}">{month.capitalize()}</a></li>'
+        challenges_dict[month.capitalize()] = month_path
+        # items_path.append(month_path)
+        # # list_items += f'<li><a href="{month_path}">{month.capitalize()}</a></li>'
+        # list_items.append(month.capitalize())
 
-    response_data = f"<ul>{list_items}</ul>"
+    # response_data = f"<h1>All Challenges</h1><ul>{list_items}</ul>"
+    # response_data = list_items
+    #
+    # return HttpResponse(response_data)
 
-    return HttpResponse(response_data)
+    return render(request, "challenges/index.html", {
+        "challenges_dict": challenges_dict,
+        # "month_path": month_path,
+        # "month_name": month.capitalize(),
+        # "items_path": items_path,
+        # "list_items": list_items
+        # "month": month.capitalize,
+        # "text": text,
+    })
 
 
 # -----------Manual method - Method 1
@@ -98,10 +115,14 @@ def monthly_challenge_by_number(request, month):
 
 def monthly_challenge(request, month):
     try:
-        # text = monthly_challenges[month]
+        text = monthly_challenges[month]
         # To load html or css content in django project, we need to include path in the setting
         # file of the main project app.
-        response_data = render_to_string("challenges/challenge.html")
-        return HttpResponse(f"<h1>{response_data}</h1>")
+        return render(request, "challenges/challenge.html", {
+            "month": month.capitalize,
+            "text": text,
+        })
+        # response_data = render_to_string("challenges/challenge.html")
+        # return HttpResponse(f"<h1>{response_data}</h1>")
     except:
         return HttpResponseNotFound("<h1>This month is not Supported!</h1>")

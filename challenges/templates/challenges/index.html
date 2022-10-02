@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Monthly Challenges</title>
+    <link rel="stylesheet" href="{% static 'challenges/styles/header.css' %}">
+    <link rel="stylesheet" href="{% static 'challenges/styles/style.css' %}">
+</head>
+<body>
+
+
+<header>
+    <nav>
+        {#        <a href="{% url "index" %}">Monthly Challenges</a>#}
+        <h1>Monthly Challenges</h1>
+
+    </nav>
+</header>
+<ul>
+    {% for month, challenge in challenges_dict.items %}
+        <li><a href="{{ challenge }}">{{ month }}</a></li>
+    {% endfor %}
+
+    {#    <li><a href="{{ items_path) }}">{{ list_itemse }}</a></li>#}
+
+</ul>
+
+
+</body>
+</html>

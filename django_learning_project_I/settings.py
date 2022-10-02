@@ -31,12 +31,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "challenges",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
 ]
 
 MIDDLEWARE = [
@@ -55,11 +57,16 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
-            BASE_DIR / 'templates',
-            BASE_DIR / "challenges" / "templates"
+            # This way of configuring html template is not dynamic, if we change name of our app
+            # then we have to change it from here also which is time-wasting.
+            # This is usable when we want to add any global project in this project.
+            # BASE_DIR / 'templates',
+            # BASE_DIR / "challenges" / "templates"
         ]
         ,
-        "APP_DIRS": True,
+        "APP_DIRS": True,  # to add templates automatically in the project, then add here and also
+        # include app folder name in the installed app, it will configure the app module with the
+        # entire project
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
