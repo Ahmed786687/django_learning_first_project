@@ -60,7 +60,7 @@ TEMPLATES = [
             # This way of configuring html template is not dynamic, if we change name of our app
             # then we have to change it from here also which is time-wasting.
             # This is usable when we want to add any global project in this project.
-            # BASE_DIR / 'templates',
+            BASE_DIR / 'templates',
             # BASE_DIR / "challenges" / "templates"
         ]
         ,
@@ -121,6 +121,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = "static/"
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

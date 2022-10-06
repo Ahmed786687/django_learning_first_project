@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect, Http404
 from django.urls import reverse
 from django.shortcuts import render
 from django.template.loader import render_to_string
@@ -13,7 +13,7 @@ monthly_challenges = {
     "july": "Create a youtube channel on Development",
     "august": "Try to complete Google Course",
     "september": "Complete Django Course of Maxi",
-    "october": "Complete Data Science course of udemy",
+    "october": None,
     "november": "complete React js course",
     "december": "Try to wind up all task of the whole year to take a new start"
 }
@@ -119,10 +119,13 @@ def monthly_challenge(request, month):
         # To load html or css content in django project, we need to include path in the setting
         # file of the main project app.
         return render(request, "challenges/challenge.html", {
-            "month": month.capitalize,
+            # "month": month.capitalize(),
+            "month": month,
             "text": text,
         })
         # response_data = render_to_string("challenges/challenge.html")
         # return HttpResponse(f"<h1>{response_data}</h1>")
     except:
-        return HttpResponseNotFound("<h1>This month is not Supported!</h1>")
+        raise Http404()
+        # response_data = render_to_string("404.html")
+        # return HttpResponseNotFound(response_data)
